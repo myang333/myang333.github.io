@@ -1,10 +1,470 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Website</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michelle Yang</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #08080f;
+      padding: 40px 24px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .layout {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      max-width: 860px;
+      width: 100%;
+    }
+
+    .photo { flex-shrink: 0; width: 340px; order: 2; }
+
+    .photo img {
+      width: 100%;
+      display: block;
+      border-radius: 16px;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 50%, transparent 100%),
+                          linear-gradient(to bottom, transparent 0%, black 30%, black 85%, transparent 100%);
+      -webkit-mask-composite: source-in;
+      mask-image: linear-gradient(to right, transparent 0%, black 8%, black 50%, transparent 100%),
+                  linear-gradient(to bottom, transparent 0%, black 30%, black 85%, transparent 100%);
+      mask-composite: intersect;
+    }
+
+    .card {
+      flex: 1; order: 1;
+      padding: 8px 24px;
+      background: none;
+      border: none;
+      position: relative;
+    }
+
+    .name { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; color: rgba(255,255,255,0.95); margin-bottom: 6px; }
+    .tagline { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 28px; }
+    .divider { height: 1px; background: linear-gradient(to right, rgba(255,255,255,0.10), transparent); margin-bottom: 24px; }
+    .bio { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+    .bio-item { display: flex; gap: 10px; align-items: flex-start; }
+    .bio-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.20); margin-top: 9px; flex-shrink: 0; }
+    .bio-text { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.75; }
+
+    .links { display: flex; flex-direction: column; gap: 10px; }
+    .link {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.38);
+      transition: color 0.2s;
+      letter-spacing: 0.01em;
+      width: fit-content;
+    }
+    .link:hover { color: rgba(255,255,255,0.80); }
+
+    .wip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.28);
+      letter-spacing: 0.06em;
+    }
+    .wip-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(160,200,255,0.5);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.3); }
+    }
+
+    @media (max-width: 680px) {
+      body { align-items: flex-start; padding: 56px 24px 48px; }
+
+      .layout {
+        flex-direction: column;
+        gap: 32px;
+        align-items: center;
+      }
+
+      .card {
+        order: 1;
+        padding: 0 4px;
+        text-align: center;
+        width: 100%;
+      }
+
+      .photo {
+        order: 2;
+        width: 88%;
+        max-width: 300px;
+        height: 280px;
+        overflow: hidden;
+        border-radius: 16px;
+      }
+
+      .photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 20%;
+        border-radius: 0;
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 75%, transparent 100%),
+                            linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+        -webkit-mask-composite: source-in;
+        mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 75%, transparent 100%),
+                    linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+        mask-composite: intersect;
+      }
+
+      .divider {
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.10), transparent);
+      }
+
+      .bio-item { justify-content: center; }
+      .bio-dot { display: none; }
+      .links { align-items: center; }
+      .wip { justify-content: center; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Website is up!</h1>
-  <p>More content coming soon.</p>
+  <canvas id="c"></canvas>
+
+  <div class="layout">
+    <div class="photo">
+      <img src="pic.jpg" alt="Michelle Yang">
+    </div>
+    <div class="card">
+      <p class="name">Michelle Yang</p>
+      <p class="tagline">AI · Data</p>
+      <div class="divider"></div>
+      <div class="bio">
+        <div class="bio-item">
+          <div class="bio-dot"></div>
+          <p class="bio-text">Passionate about AI/ML and data — love finding the insights hidden in data, and combining data with business to build strategies that drive good decisions and tell good stories.</p>
+        </div>
+        <div class="bio-item">
+          <div class="bio-dot"></div>
+          <p class="bio-text">Also really into cars.</p>
+        </div>
+      </div>
+      <div class="links">
+        <a href="https://github.com/myang333" class="link" target="_blank">GitHub</a>
+        <a href="mailto:ysyangcareer@gmail.com" class="link">Email</a>
+      </div>
+      <div class="wip">
+        <span class="wip-dot"></span>
+        still building
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+
+    let W, H, stars = [], clouds = [], meteors = [];
+    let mouse = { x: -999, y: -999, px: -999, py: -999, vx: 0, vy: 0, t: 0 };
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      buildStars();
+    }
+
+    function buildStars() {
+      stars = [];
+      const n = Math.floor(W * H / 5500);
+      for (let i = 0; i < n; i++) {
+        const bright = Math.random();
+        // Real stars: mostly tiny & dim, few medium, rare bright
+        const r = bright > 0.995 ? Math.random() * 1.0 + 0.9   // rare bright
+                : bright > 0.94  ? Math.random() * 0.5 + 0.4   // medium
+                : bright > 0.6   ? Math.random() * 0.3 + 0.15  // small
+                :                  Math.random() * 0.15 + 0.05; // dust
+
+        // Star color: blue-white (hot), white, or warm yellow-orange
+        const colorRoll = Math.random();
+        const color = colorRoll > 0.85 ? [210, 225, 255]  // blue-white
+                    : colorRoll > 0.15 ? [245, 245, 255]  // white
+                    :                    [255, 235, 200];  // warm
+
+        // Milky Way band: denser toward center-bottom diagonal
+        const mx = s => s.x / W, my = s => s.y / H;
+        const bandBoost = Math.random() < 0.3; // 30% chance to cluster stars in a band
+
+        stars.push({
+          x: bandBoost
+            ? Math.random() * W * 0.6 + W * 0.2           // band cluster
+            : Math.random() * W,
+          y: bandBoost
+            ? Math.random() * H * 0.5 + H * 0.25
+            : Math.random() * H,
+          r,
+          base: bright > 0.94 ? Math.random() * 0.4 + 0.4   // brighter base for big stars
+              : Math.random() * 0.25 + 0.05,                  // mostly dim
+          phase: Math.random() * Math.PI * 2,
+          speed: Math.random() * 0.3 + 0.05,
+          spike: bright > 0.995,
+          color,
+        });
+      }
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Mouse tracking (stars only)
+    window.addEventListener('mousemove', e => {
+      mouse.x = e.clientX; mouse.y = e.clientY;
+    });
+
+    // Random nebula cloud spawner
+    function spawnCloud() {
+      const hue = 200 + Math.random() * 80;
+      clouds.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 120 + 60,
+        o: 0,
+        peak: Math.random() * 0.06 + 0.02,
+        phase: 'in',
+        hue,
+      });
+      setTimeout(spawnCloud, 1800 + Math.random() * 2500);
+    }
+    spawnCloud();
+
+    // Random shooting star spawner
+    function spawnMeteor() {
+      const angle = (Math.random() * 0.4 + 0.1) * Math.PI; // roughly top-left to bottom-right
+      const spd   = 7 + Math.random() * 6;
+      meteors.push({
+        x: Math.random() * W * 0.7,
+        y: Math.random() * H * 0.4,
+        vx: Math.cos(angle) * spd,
+        vy: Math.sin(angle) * spd,
+        len: 80 + Math.random() * 120,
+        o: 0.9,
+        life: 1,
+      });
+      setTimeout(spawnMeteor, 12000 + Math.random() * 18000);
+    }
+    spawnMeteor();
+
+    function drawStar(s, t) {
+      const twinkle = Math.sin(t * s.speed * 0.001 + s.phase) * 0.06;
+      const op = Math.min(1, s.base + twinkle);
+      const [cr, cg, cb] = s.color || [245, 245, 255];
+
+      // Skip dust stars that are nearly invisible — just draw core
+      if (s.r < 0.2) {
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${cr},${cg},${cb},${op})`;
+        ctx.fill();
+        return;
+      }
+
+      // Soft glow for larger stars
+      const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 5);
+      g.addColorStop(0, `rgba(${cr},${cg},${cb},${op * 0.8})`);
+      g.addColorStop(0.4, `rgba(${cr},${cg},${cb},${op * 0.15})`);
+      g.addColorStop(1, 'transparent');
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r * 5, 0, Math.PI * 2);
+      ctx.fillStyle = g; ctx.fill();
+
+      // Core
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${cr},${cg},${cb},${op})`; ctx.fill();
+
+      // Cross spikes for bright stars
+      if (s.spike) {
+        const len = s.r * 12;
+        ctx.save();
+        ctx.globalAlpha = op * 0.35;
+        ctx.strokeStyle = 'rgba(220,230,255,1)';
+        ctx.lineWidth = s.r * 0.6;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(s.x - len, s.y); ctx.lineTo(s.x + len, s.y);
+        ctx.moveTo(s.x, s.y - len); ctx.lineTo(s.x, s.y + len);
+        // Diagonal faint spikes
+        const d = len * 0.45;
+        ctx.lineWidth = s.r * 0.25;
+        ctx.globalAlpha = op * 0.15;
+        ctx.moveTo(s.x - d, s.y - d); ctx.lineTo(s.x + d, s.y + d);
+        ctx.moveTo(s.x + d, s.y - d); ctx.lineTo(s.x - d, s.y + d);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+
+    // Big Dipper (北斗七星) — top-left corner, away from content
+    const DIPPER_STARS = [
+      { id: 'alkaid',  x: 0.04, y: 0.10, r: 1.2 },  // 摇光 handle tip
+      { id: 'mizar',   x: 0.09, y: 0.14, r: 1.1 },  // 开阳
+      { id: 'alioth',  x: 0.14, y: 0.16, r: 1.3 },  // 玉衡
+      { id: 'megrez',  x: 0.18, y: 0.16, r: 1.0 },  // 天权
+      { id: 'phecda',  x: 0.19, y: 0.23, r: 1.1 },  // 天玑
+      { id: 'merak',   x: 0.24, y: 0.24, r: 1.2 },  // 天璇
+      { id: 'dubhe',   x: 0.25, y: 0.17, r: 1.4 },  // 天枢
+    ];
+    const DIPPER_LINES = [
+      ['alkaid','mizar'],['mizar','alioth'],['alioth','megrez'],
+      ['megrez','dubhe'],['dubhe','merak'],['merak','phecda'],['phecda','megrez'],
+    ];
+
+    // Scorpius constellation — far bottom-right corner
+    const SCORPIUS_STARS = [
+      { id: 'pi',      x: 0.66, y: 0.75, r: 0.8 },
+      { id: 'beta',    x: 0.70, y: 0.70, r: 1.0 },
+      { id: 'omega',   x: 0.67, y: 0.80, r: 0.7 },
+      { id: 'delta',   x: 0.73, y: 0.74, r: 0.9 },
+      { id: 'sigma',   x: 0.71, y: 0.82, r: 0.8 },
+      { id: 'alpha',   x: 0.75, y: 0.87, r: 1.6, red: true },
+      { id: 'tau',     x: 0.78, y: 0.81, r: 0.8 },
+      { id: 'eps',     x: 0.80, y: 0.91, r: 0.9 },
+      { id: 'mu',      x: 0.84, y: 0.94, r: 0.8 },
+      { id: 'zeta',    x: 0.88, y: 0.95, r: 0.9 },
+      { id: 'eta',     x: 0.91, y: 0.93, r: 0.7 },
+      { id: 'theta',   x: 0.93, y: 0.89, r: 1.1 },
+      { id: 'iota',    x: 0.95, y: 0.83, r: 0.8 },
+      { id: 'kappa',   x: 0.96, y: 0.77, r: 0.9 },
+      { id: 'lambda',  x: 0.97, y: 0.71, r: 1.1 },
+      { id: 'upsilon', x: 0.97, y: 0.67, r: 0.9 },
+    ];
+    const SCORPIUS_LINES = [
+      ['pi','delta'],['beta','delta'],['omega','delta'],
+      ['delta','sigma'],['sigma','alpha'],['tau','delta'],['tau','alpha'],
+      ['alpha','eps'],['eps','mu'],['mu','zeta'],['zeta','eta'],
+      ['eta','theta'],['theta','iota'],['iota','kappa'],
+      ['kappa','lambda'],['lambda','upsilon'],
+    ];
+
+    function drawConstellation(starList, lineList, t, offsetX = 0) {
+      const map = {};
+      for (const s of starList) map[s.id] = { x: (s.x + offsetX) * W, y: s.y * H };
+
+      ctx.save();
+      ctx.strokeStyle = 'rgba(160,180,255,0.07)';
+      ctx.lineWidth = 0.8; ctx.lineCap = 'round';
+      for (const [a, b] of lineList) {
+        ctx.beginPath();
+        ctx.moveTo(map[a].x, map[a].y);
+        ctx.lineTo(map[b].x, map[b].y);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      for (const s of starList) {
+        const x = (s.x + offsetX) * W, y = s.y * H;
+        const twinkle = Math.sin(t * 0.0004 + s.x * 10) * 0.06;
+        const op = 0.28 + twinkle;
+        const isRed = s.red;
+
+        const g = ctx.createRadialGradient(x, y, 0, x, y, s.r * 10);
+        g.addColorStop(0, isRed ? `rgba(255,140,80,${op * 0.35})` : `rgba(200,215,255,${op * 0.35})`);
+        g.addColorStop(1, 'transparent');
+        ctx.beginPath(); ctx.arc(x, y, s.r * 8, 0, Math.PI * 2);
+        ctx.fillStyle = g; ctx.fill();
+
+        ctx.beginPath(); ctx.arc(x, y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = isRed ? `rgba(255,160,100,${op})` : `rgba(210,225,255,${op})`;
+        ctx.fill();
+
+        if (s.r >= 1.2) {
+          const len = s.r * 10;
+          ctx.save();
+          ctx.globalAlpha = op * 0.3;
+          ctx.strokeStyle = isRed ? 'rgba(255,160,100,1)' : 'rgba(220,230,255,1)';
+          ctx.lineWidth = s.r * 0.5; ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(x - len, y); ctx.lineTo(x + len, y);
+          ctx.moveTo(x, y - len); ctx.lineTo(x, y + len);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    }
+
+    function drawScorpius(t) {
+      drawConstellation(SCORPIUS_STARS, SCORPIUS_LINES, t);
+    }
+
+    function draw(t) {
+      ctx.clearRect(0, 0, W, H);
+
+      // Constellations
+      drawScorpius(t);
+      drawConstellation(DIPPER_STARS, DIPPER_LINES, t);
+
+      // Stars
+      for (const s of stars) drawStar(s, t);
+
+      // Nebula clouds
+      for (let i = clouds.length - 1; i >= 0; i--) {
+        const c = clouds[i];
+        if (c.phase === 'in') {
+          c.o += 0.003;
+          if (c.o >= c.peak) { c.o = c.peak; c.phase = 'out'; }
+        } else {
+          c.o -= 0.0008;
+          if (c.o <= 0) { clouds.splice(i, 1); continue; }
+        }
+        const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r);
+        g.addColorStop(0, `hsla(${c.hue},60%,80%,${c.o})`);
+        g.addColorStop(1, 'transparent');
+        ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+        ctx.fillStyle = g; ctx.fill();
+      }
+
+      // Shooting stars / meteors
+      for (let i = meteors.length - 1; i >= 0; i--) {
+        const m = meteors[i];
+        m.x += m.vx; m.y += m.vy;
+        m.o  *= 0.93;
+        m.life -= 0.04;
+        if (m.life <= 0 || m.o < 0.01) { meteors.splice(i, 1); continue; }
+
+        const tail = { x: m.x - Math.cos(Math.atan2(m.vy, m.vx)) * m.len,
+                       y: m.y - Math.sin(Math.atan2(m.vy, m.vx)) * m.len };
+        const g = ctx.createLinearGradient(tail.x, tail.y, m.x, m.y);
+        g.addColorStop(0, 'transparent');
+        g.addColorStop(1, `rgba(220,235,255,${m.o})`);
+        ctx.beginPath(); ctx.moveTo(tail.x, tail.y); ctx.lineTo(m.x, m.y);
+        ctx.strokeStyle = g; ctx.lineWidth = 1.5; ctx.lineCap = 'round';
+        ctx.stroke();
+
+        // Bright head
+        ctx.beginPath(); ctx.arc(m.x, m.y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${m.o})`; ctx.fill();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    requestAnimationFrame(draw);
+  </script>
 </body>
 </html>
