@@ -107,20 +107,14 @@
         align-items: center;
       }
 
-      .card {
-        order: 1;
-        padding: 0 4px;
-        text-align: center;
-        width: 100%;
-      }
-
       .photo {
         order: 2;
-        width: 88%;
-        max-width: 300px;
-        height: 280px;
+        width: 100%;
+        max-width: 100%;
+        height: 55vw;
+        max-height: 280px;
         overflow: hidden;
-        border-radius: 16px;
+        border-radius: 0;
       }
 
       .photo img {
@@ -130,11 +124,18 @@
         object-position: center 20%;
         border-radius: 0;
         -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 75%, transparent 100%),
-                            linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+                            linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
         -webkit-mask-composite: source-in;
         mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 75%, transparent 100%),
-                    linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+                    linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
         mask-composite: intersect;
+      }
+
+      .card {
+        order: 1;
+        padding: 0 4px;
+        text-align: center;
+        width: 100%;
       }
 
       .divider {
@@ -162,16 +163,12 @@
       <div class="bio">
         <div class="bio-item">
           <div class="bio-dot"></div>
-          <p class="bio-text">Passionate about AI/ML and data — love finding the insights hidden in data, and combining data with business to build strategies that drive good decisions and tell good stories.</p>
+          <p class="bio-text">AI/ML obsessed — I build models, find patterns, and turn them into stories that actually move decisions.</p>
         </div>
         <div class="bio-item">
           <div class="bio-dot"></div>
           <p class="bio-text">Also really into cars.</p>
         </div>
-      </div>
-      <div class="links">
-        <a href="https://github.com/myang333" class="link" target="_blank">GitHub</a>
-        <a href="mailto:ysyangcareer@gmail.com" class="link">Email</a>
       </div>
       <div class="wip">
         <span class="wip-dot"></span>
