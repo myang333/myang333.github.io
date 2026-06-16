@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cars — Michelle Yang</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      background: #0e0e0e;
+      color: rgba(255,255,255,0.85);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% 20%, rgba(40,35,30,0.9) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 60% at 85% 80%, rgba(30,30,40,0.8) 0%, transparent 60%),
+        #0e0e0e;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 32px 80px;
+    }
+
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 52px;
+    }
+
+    .back {
+      text-decoration: none;
+      font-size: 13px;
+      color: rgba(255,255,255,0.28);
+      transition: color 0.2s;
+    }
+    .back:hover { color: rgba(255,255,255,0.65); }
+
+    .header-right { text-align: right; }
+
+    .page-title {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .page-subtitle {
+      font-size: 11px;
+      color: rgba(255,255,255,0.22);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+
+    /* Grid — 2 columns */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .grid-item {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .img-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      aspect-ratio: 2/3;
+    }
+
+    .img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 8px;
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  filter 0.4s ease;
+      filter: brightness(0.85) contrast(1.06) saturate(0.88);
+    }
+
+    .grid-item:hover .img-wrap img {
+      transform: scale(1.04);
+      filter: brightness(1.0) contrast(1.06) saturate(1.0);
+    }
+
+    .img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+      pointer-events: none;
+      transition: box-shadow 0.3s;
+    }
+    .grid-item:hover .img-wrap::after {
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+    }
+
+    .caption {
+      padding: 0 2px;
+    }
+
+    .caption-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.01em;
+    }
+
+    .grid-spacer { visibility: hidden; }
+
+    .caption-event {
+      font-size: 11px;
+      color: rgba(255,255,255,0.28);
+      margin-top: 2px;
+      letter-spacing: 0.02em;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(0,0,0,0.94);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      backdrop-filter: blur(10px);
+    }
+    .lightbox.open { display: flex; }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.7);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px; right: 28px;
+      font-size: 22px;
+      color: rgba(255,255,255,0.35);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .lightbox-close:hover { color: rgba(255,255,255,0.85); }
+
+    @media (max-width: 680px) {
+      .page { padding: 40px 16px 60px; }
+      .grid { grid-template-columns: 1fr; gap: 14px; }
+      .page-title { font-size: 22px; }
+    }
+
+    @media (max-width: 400px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <div class="page">
+    <header>
+      <a href="index.html" class="back">← Michelle Yang</a>
+      <div class="header-right">
+        <p class="page-title">Cars</p>
+        <p class="page-subtitle">Shot on iPhone</p>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="grid-item" onclick="openLightbox('cars/WechatIMG232.jpg')">
+        <div class="img-wrap">
+          <img src="cars/WechatIMG232.jpg" alt="Bugatti Chiron">
+        </div>
+        <div class="caption">
+          <p class="caption-name">Bugatti Chiron</p>
+          <p class="caption-event">Monterey Car Week 2025</p>
+        </div>
+      </div>
+
+      <div class="grid-item" onclick="openLightbox('cars/WechatIMG233.jpg')">
+        <div class="img-wrap">
+          <img src="cars/WechatIMG233.jpg" alt="Mercedes-AMG G63 4x4">
+        </div>
+        <div class="caption">
+          <p class="caption-name">Mercedes-AMG G63 4×4²</p>
+          <p class="caption-event">Monterey Car Week 2025</p>
+        </div>
+      </div>
+
+      <div class="grid-item" onclick="openLightbox('cars/WechatIMG230.jpg')">
+        <div class="img-wrap">
+          <img src="cars/WechatIMG230.jpg" alt="Pagani Huayra">
+        </div>
+        <div class="caption">
+          <p class="caption-name">Pagani Huayra</p>
+          <p class="caption-event">Monterey Car Week 2025</p>
+        </div>
+      </div>
+
+      <div class="grid-item" onclick="openLightbox('cars/WechatIMG229.jpg')">
+        <div class="img-wrap">
+          <img src="cars/WechatIMG229.jpg" alt="Ferrari F50">
+        </div>
+        <div class="caption">
+          <p class="caption-name">Ferrari F50</p>
+          <p class="caption-event">Monterey Car Week 2025</p>
+        </div>
+      </div>
+
+      <div class="grid-item" onclick="openLightbox('cars/WechatIMG231.jpg')">
+        <div class="img-wrap">
+          <img src="cars/WechatIMG231.jpg" alt="Singer DLS">
+        </div>
+        <div class="caption">
+          <p class="caption-name">Singer DLS</p>
+          <p class="caption-event">Monterey Car Week 2025</p>
+        </div>
+      </div>
+
+      <div class="grid-spacer"></div>
+
+      <div class="grid-item" onclick="openLightbox('cars/WechatIMG235.jpg')">
+        <div class="img-wrap">
+          <img src="cars/WechatIMG235.jpg" alt="Porsche 911 Turbo S">
+        </div>
+        <div class="caption">
+          <p class="caption-name">Porsche 911 Turbo S</p>
+          <p class="caption-event">Spotted</p>
+        </div>
+      </div>
+
+      <div class="grid-item" onclick="openLightbox('cars/WechatIMG234.jpg')">
+        <div class="img-wrap">
+          <img src="cars/WechatIMG234.jpg" alt="HRE Wheels">
+        </div>
+        <div class="caption">
+          <p class="caption-name">HRE Wheels</p>
+          <p class="caption-event">Spotted</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <script>
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.add('open');
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+    }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+</body>
+</html>

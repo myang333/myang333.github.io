@@ -58,11 +58,11 @@
     }
 
     .name { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; color: rgba(255,255,255,0.95); margin-bottom: 6px; }
-    .tagline { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 28px; }
-    .divider { height: 1px; background: linear-gradient(to right, rgba(255,255,255,0.10), transparent); margin-bottom: 24px; }
-    .bio { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
-    .bio-item { display: flex; gap: 10px; align-items: flex-start; }
-    .bio-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.20); margin-top: 9px; flex-shrink: 0; }
+    .tagline { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 32px; }
+    .divider { height: 1px; background: linear-gradient(to right, rgba(255,255,255,0.10), transparent); margin-bottom: 16px; }
+    .bio { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+    .bio-item { display: flex; }
+    .bio-dot { display: none; }
     .bio-text { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.75; }
 
     .links { display: flex; flex-direction: column; gap: 10px; }
@@ -76,6 +76,38 @@
       width: fit-content;
     }
     .link:hover { color: rgba(255,255,255,0.80); }
+
+    .pub-section { margin-bottom: 20px; }
+
+    .pub-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    .pub-item {
+      display: block;
+      text-decoration: none;
+      padding: 14px 0;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      transition: opacity 0.2s;
+    }
+    .pub-item:hover { opacity: 0.7; }
+
+    .pub-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.90);
+      line-height: 1.5;
+      margin-bottom: 4px;
+    }
+
+    .pub-meta {
+      font-size: 11px;
+      color: rgba(255,255,255,0.38);
+    }
 
     .wip {
       display: inline-flex;
@@ -138,7 +170,6 @@
       }
 
       .bio { text-align: left; }
-      .bio-dot { display: none; }
       .links { align-items: center; }
       .wip { justify-content: center; }
     }
@@ -154,17 +185,22 @@
     <div class="card">
       <p class="name">Michelle Yang</p>
       <p class="tagline">AI · Data</p>
-      <div class="divider"></div>
       <div class="bio">
         <div class="bio-item">
-          <div class="bio-dot"></div>
           <p class="bio-text">Passionate about AI/ML and data — interested in LLM research, and turning insights into stories that move decisions.</p>
         </div>
         <div class="bio-item">
-          <div class="bio-dot"></div>
-          <p class="bio-text">Also really into cars.</p>
+          <p class="bio-text">Also really into <a href="cars.html" style="color:inherit;text-underline-offset:3px;">cars</a>.</p>
         </div>
       </div>
+      <div class="pub-section">
+        <p class="pub-label">Publications</p>
+        <a href="https://arxiv.org/abs/2606.14958" class="pub-item" target="_blank">
+          <p class="pub-title">MVEB: Massive Video Embedding Benchmark</p>
+          <p class="pub-meta">arXiv · 2026</p>
+        </a>
+      </div>
+
       <div class="wip">
         <span class="wip-dot"></span>
         still building
